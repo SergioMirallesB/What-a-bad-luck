@@ -858,7 +858,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &1960751603
 MonoBehaviour:
@@ -872,15 +872,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23d8db1d859f9764d857fe8f0b6c85da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  moveAction: {fileID: 3319207326575753355, guid: 7e0abe90d2712144a853ee8b3709553b, type: 3}
-  jumpAction: {fileID: -3979870820872487291, guid: 7e0abe90d2712144a853ee8b3709553b, type: 3}
-  dashAction: {fileID: 4214945943311733423, guid: 7e0abe90d2712144a853ee8b3709553b, type: 3}
   moveSpeed: 7
   acceleration: 50
   deceleration: 60
-  jumpForce: 12
+  jumpForce: 15
   jumpCutMultiplier: 0.5
-  maxJumps: 2
+  maxJumps: 1
   coyoteTime: 0.12
   jumpBufferTime: 0.12
   groundCheck: {fileID: 756071384}
@@ -888,10 +885,8 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  dashSpeed: 18
-  dashDuration: 0.18
-  dashCooldown: 0.1
-  dashGravityScale: 0
+  moveAction: {fileID: 3319207326575753355, guid: 7e0abe90d2712144a853ee8b3709553b, type: 3}
+  jumpAction: {fileID: -3979870820872487291, guid: 7e0abe90d2712144a853ee8b3709553b, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
