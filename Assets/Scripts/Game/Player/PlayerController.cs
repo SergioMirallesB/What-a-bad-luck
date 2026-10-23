@@ -1,6 +1,8 @@
 
+using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -26,6 +28,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private InputActionReference jumpAction;
 
     private Rigidbody2D rb;
+    private Collider2D collider;
     private float moveInput;
     private float coyoteCounter;
     private float jumpBufferCounter;
@@ -35,12 +38,15 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-    }
 
+        collider = GetComponent<Collider2D>();
+    }
+    
     private void OnEnable()
     {
         moveAction.action.Enable();
         jumpAction.action.Enable();
+
         jumpAction.action.performed += OnJump;
         jumpAction.action.canceled += OnJumpReleased;
     }
@@ -49,6 +55,7 @@ public class PlayerController : MonoBehaviour
     {
         jumpAction.action.performed -= OnJump;
         jumpAction.action.canceled -= OnJumpReleased;
+
         moveAction.action.Disable();
         jumpAction.action.Disable();
     }
@@ -92,6 +99,7 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         float targetSpeed = moveInput * moveSpeed;
+
         float rate = Mathf.Abs(targetSpeed) > 0.01f
             ? acceleration
             : deceleration;
@@ -142,6 +150,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // Solo para debug, luego quitar
     private void OnDrawGizmosSelected()
     {
         if (groundCheck == null)
@@ -153,4 +162,13 @@ public class PlayerController : MonoBehaviour
             groundCheckRadius
         );
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Victory"))
+        {
+            SceneManager.LoadScene(2);
+        }
+    }
+
 }
