@@ -1,5 +1,6 @@
 
 using Unity.VectorGraphics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -10,6 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float moveSpeed = 8f;
     [SerializeField] private float acceleration = 60f;
     [SerializeField] private float deceleration = 80f;
+    [SerializeField] private float sprintModifier = 8f;
 
     [Header("Jump")]
     [SerializeField] private float jumpForce = 14f;
@@ -26,9 +28,16 @@ public class PlayerController : MonoBehaviour
     [Header("Input")]
     [SerializeField] private InputActionReference moveAction;
     [SerializeField] private InputActionReference jumpAction;
+    [SerializeField] private InputActionReference sprintAction;
+    [Header("Particles")]
+    [SerializeField] private TrailRenderer trail;
 
+    [Header("Others")]
+    private Vector2 lastCheckPoint = Vector2.zero;
+    private Animator animator;
     private Rigidbody2D rb;
     private Collider2D collider;
+    private HealthSystem healthManager;
     private float moveInput;
     private float coyoteCounter;
     private float jumpBufferCounter;
@@ -40,29 +49,56 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         collider = GetComponent<Collider2D>();
+
+        healthManager = GetComponent<HealthSystem>();
+
+        animator = GetComponent<Animator>();
     }
     
     private void OnEnable()
     {
         moveAction.action.Enable();
         jumpAction.action.Enable();
+        sprintAction.action.Enable();
 
         jumpAction.action.performed += OnJump;
         jumpAction.action.canceled += OnJumpReleased;
+        sprintAction.action.performed += OnSprint;
+        sprintAction.action.canceled += OnSprintReleased;
     }
 
     private void OnDisable()
     {
         jumpAction.action.performed -= OnJump;
         jumpAction.action.canceled -= OnJumpReleased;
+        sprintAction.action.performed -= OnSprint;
+        sprintAction.action.canceled -= OnSprintReleased;
 
         moveAction.action.Disable();
         jumpAction.action.Disable();
+        sprintAction.action.Disable();
     }
 
     private void Update()
     {
-        moveInput = moveAction.action.ReadValue<Vector2>().x;
+        if (this.transform.position.y <= -10)
+        {
+            this.TeleportDamage(1);
+        }
+        
+        moveInput = moveAction.action.ReadValue<float>();
+
+        animator.SetBool("IsWalking", moveInput != 0.0f);
+        
+        if (moveInput < 0)
+        {
+            this.transform.localScale = new Vector3(-1, 1, 1);
+        } 
+        else if (moveInput > 0)
+        {
+
+            this.transform.localScale = new Vector3(1, 1, 1);
+        }
 
         CheckGround();
         UpdateTimers();
@@ -85,6 +121,7 @@ public class PlayerController : MonoBehaviour
 
         if (isGrounded)
         {
+            animator.SetBool("IsJumping", false);
             coyoteCounter = coyoteTime;
             jumpsUsed = 0;
         }
@@ -144,11 +181,32 @@ public class PlayerController : MonoBehaviour
                 jumpForce
             );
 
+            animator.SetBool("IsJumping", true);
+
             jumpsUsed++;
             coyoteCounter = 0f;
             jumpBufferCounter = 0f;
         }
     }
+
+    private void OnSprint(InputAction.CallbackContext contex)
+    {
+        this.moveSpeed += this.sprintModifier;
+        
+        this.trail.emitting = true;
+
+        this.animator.speed = 2f;
+    }
+
+    private void OnSprintReleased(InputAction.CallbackContext contex)
+    {
+        this.moveSpeed -= this.sprintModifier;
+        
+        this.trail.emitting = false;
+
+        this.animator.speed = 1f;
+    }
+
 
     // Solo para debug, luego quitar
     private void OnDrawGizmosSelected()
@@ -168,7 +226,23 @@ public class PlayerController : MonoBehaviour
         if (collision.CompareTag("Victory"))
         {
             SceneManager.LoadScene(2);
+        } 
+        else if (collision.CompareTag("CheckPoint"))
+        {
+            this.lastCheckPoint = collision.gameObject.transform.position;
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        healthManager.TakeDamage(damage);
+    }
+
+    public void TeleportDamage(int damage)
+    {
+        this.TakeDamage(damage);
+
+        this.transform.position = lastCheckPoint;
     }
 
 }

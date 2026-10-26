@@ -1,6 +1,6 @@
 {
     "version": 1,
-    "name": "PlayerInputs",
+    "name": "Inputs",
     "maps": [
         {
             "name": "Movement",
@@ -20,14 +20,14 @@
                     "name": "Move",
                     "type": "Value",
                     "id": "eceb7d84-d50f-4a76-95b5-8b9596c3a136",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true,
                     "priority": 0
                 },
                 {
-                    "name": "Dash",
+                    "name": "Sprint",
                     "type": "Button",
                     "id": "d0ad6589-e184-49b6-a520-0641ff1d312c",
                     "expectedControlType": "",
@@ -50,9 +50,9 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "2D Vector",
+                    "name": "1D Axis",
                     "id": "fdbd9615-3f15-4cd8-b1e0-caa812260b92",
-                    "path": "2DVector",
+                    "path": "1DAxis",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -61,30 +61,8 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "up",
+                    "name": "Negative",
                     "id": "03e1aedd-65b2-40bd-9c93-9dc46d1a62be",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "df296304-a405-4a24-8daa-6e6e329949ee",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "6c5867c5-c407-4c2e-a506-e39b0ea89512",
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
@@ -94,8 +72,8 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "right",
-                    "id": "828ec352-de89-4191-89f1-91432d2ab72a",
+                    "name": "Positive",
+                    "id": "df296304-a405-4a24-8daa-6e6e329949ee",
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
@@ -111,9 +89,60 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Dash",
+                    "action": "Sprint",
                     "isComposite": false,
                     "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Camera",
+            "id": "3e181fc0-421c-47b7-98b0-2c45807eb58b",
+            "actions": [
+                {
+                    "name": "Look",
+                    "type": "Value",
+                    "id": "2caf035d-f26a-464c-b2c2-55c935937cf6",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true,
+                    "priority": 0
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "1D Axis",
+                    "id": "c44ffdb6-3812-4be6-b258-a10e9044b5e9",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "aae999e3-81fc-4c54-ad1c-1703f22a1a26",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "d4d1329e-828e-4041-ac92-9fe8f4b1aec6",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

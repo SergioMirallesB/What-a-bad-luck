@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Victory
+  - CheckPoint
   layers:
   - Default
   - TransparentFX
