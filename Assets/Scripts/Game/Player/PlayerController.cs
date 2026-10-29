@@ -124,6 +124,12 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("IsJumping", false);
             coyoteCounter = coyoteTime;
             jumpsUsed = 0;
+
+        } else
+        {
+
+            animator.SetBool("IsJumping", true);
+
         }
     }
 
@@ -131,6 +137,8 @@ public class PlayerController : MonoBehaviour
     {
         coyoteCounter -= Time.deltaTime;
         jumpBufferCounter -= Time.deltaTime;
+
+        if (coyoteCounter <= 0) jumpsUsed++;
     }
 
     private void Move()
@@ -171,7 +179,7 @@ public class PlayerController : MonoBehaviour
         if (jumpBufferCounter <= 0f)
             return;
 
-        bool canCoyoteJump = coyoteCounter > 0f && jumpsUsed == 0;
+        bool canCoyoteJump = coyoteCounter >= 0f && jumpsUsed == 0;
         bool canDoubleJump = jumpsUsed < maxJumps;
 
         if (canCoyoteJump || canDoubleJump)
@@ -181,7 +189,6 @@ public class PlayerController : MonoBehaviour
                 jumpForce
             );
 
-            animator.SetBool("IsJumping", true);
 
             jumpsUsed++;
             coyoteCounter = 0f;
@@ -225,7 +232,9 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.CompareTag("Victory"))
         {
-            SceneManager.LoadScene(2);
+            GameManager.setLevel(GameManager.getLevel() + 1);
+
+            SceneManager.LoadScene(1);
         } 
         else if (collision.CompareTag("CheckPoint"))
         {

@@ -6,7 +6,7 @@ public class DefeatManager : MonoBehaviour
     public void onTryAgain()
     {
 
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(3);
 
     }
 

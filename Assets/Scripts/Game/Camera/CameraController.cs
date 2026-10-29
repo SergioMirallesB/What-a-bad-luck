@@ -41,11 +41,11 @@ public class CameraController : MonoBehaviour
 
         if (lookingAt > 0)
         {
-            offset = new Vector3(0, 5, -10);
+            offset = new Vector3(5, 5, -10);
         } 
         else if (lookingAt < 0)
         {
-            offset = new Vector3(0, -3, -10);
+            offset = new Vector3(5, -3, -10);
         }
 
     }
