@@ -156,11 +156,14 @@ public class PlayerController : MonoBehaviour
         );
 
         rb.linearVelocity = new Vector2(newX, rb.linearVelocity.y);
+        
     }
 
     private void OnJump(InputAction.CallbackContext context)
     {
+
         jumpBufferCounter = jumpBufferTime;
+
     }
 
     private void OnJumpReleased(InputAction.CallbackContext context)
@@ -214,20 +217,6 @@ public class PlayerController : MonoBehaviour
         this.animator.speed = 1f;
     }
 
-
-    // Solo para debug, luego quitar
-    private void OnDrawGizmosSelected()
-    {
-        if (groundCheck == null)
-            return;
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(
-            groundCheck.position,
-            groundCheckRadius
-        );
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Victory"))
@@ -239,6 +228,15 @@ public class PlayerController : MonoBehaviour
         else if (collision.CompareTag("CheckPoint"))
         {
             this.lastCheckPoint = collision.gameObject.transform.position;
+        }
+        else if (collision.CompareTag("Item"))
+        {
+            
+            CardController card = collision.gameObject.GetComponent<CardController>();
+
+            card.PreDestroy();
+
+
         }
     }
 
@@ -252,6 +250,8 @@ public class PlayerController : MonoBehaviour
         this.TakeDamage(damage);
 
         this.transform.position = lastCheckPoint;
+
+        this.rb.linearVelocity = Vector2.zero;
     }
 
 }

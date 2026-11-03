@@ -39,11 +39,7 @@ public class CameraController : MonoBehaviour
         float lookingAt = look.action.ReadValue<float>();
 
 
-        if (lookingAt > 0)
-        {
-            offset = new Vector3(5, 5, -10);
-        } 
-        else if (lookingAt < 0)
+        if (lookingAt < 0)
         {
             offset = new Vector3(5, -3, -10);
         }
