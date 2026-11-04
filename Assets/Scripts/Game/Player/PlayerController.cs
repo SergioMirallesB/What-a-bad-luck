@@ -44,8 +44,24 @@ public class PlayerController : MonoBehaviour
     private int jumpsUsed;
     private bool isGrounded;
 
+    public static bool card = false;
+
+
+    
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip gameMusic;
+    [SerializeField] private AudioClip jumpSound;
+    [SerializeField] private AudioClip damageSound;
+
     private void Awake()
     {
+
+        audioSource.PlayOneShot(gameMusic);
+
+        audioSource.loop = true;
+
+        audioSource.volume = 0.1f;
+
         rb = GetComponent<Rigidbody2D>();
 
         collider = GetComponent<Collider2D>();
@@ -192,6 +208,7 @@ public class PlayerController : MonoBehaviour
                 jumpForce
             );
 
+            audioSource.PlayOneShot(jumpSound);
 
             jumpsUsed++;
             coyoteCounter = 0f;
@@ -234,6 +251,8 @@ public class PlayerController : MonoBehaviour
             
             CardController card = collision.gameObject.GetComponent<CardController>();
 
+            PlayerController.card = true;
+
             card.PreDestroy();
 
 
@@ -242,6 +261,9 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        
+        audioSource.PlayOneShot(damageSound);
+
         healthManager.TakeDamage(damage);
     }
 

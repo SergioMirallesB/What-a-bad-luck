@@ -3,10 +3,21 @@ using UnityEngine.SceneManagement;
 
 public class DefeatManager : MonoBehaviour
 {
+        
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip defeat;
+
+
+    void Start()
+    {
+        audioSource.PlayOneShot(defeat);
+    }
+
     public void onTryAgain()
     {
 
-        SceneManager.LoadScene(3);
+        GameManager.setLevel(3);
+        SceneManager.LoadScene(GameManager.getLevel());
 
     }
 
